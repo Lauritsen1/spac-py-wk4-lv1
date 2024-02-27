@@ -1,4 +1,5 @@
 from collections import defaultdict, Counter
+from matplotlib import pyplot as plt
 
 def main():
     names = ["Frank", "Alice", "Judy", "Bob", "Ivan", "Dave", "Heidi", "Charlie", "Eve", "Grace"]
@@ -6,7 +7,15 @@ def main():
 
     letter_frequency = calculate_letter_frequency(sorted_names)
 
-    print(letter_frequency)
+    items = sorted(letter_frequency.items(), key=lambda item: -item[1])
+
+    x, y = zip(*items)
+
+    plt.bar(x, y)
+    plt.xlabel('Letters')
+    plt.ylabel('Frequency')
+    plt.title('Frequency of each letter in list of names')
+    plt.show()
 
 # First approach
 def calculate_letter_frequency(names: list[str]) -> dict[str, int]:
