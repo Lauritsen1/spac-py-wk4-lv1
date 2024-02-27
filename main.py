@@ -1,16 +1,20 @@
+from collections import defaultdict
+
 def main():
     names = ["Frank", "Alice", "Judy", "Bob", "Ivan", "Dave", "Heidi", "Charlie", "Eve", "Grace"]
-    names.sort(key=lambda n: (-len(n), n))
-    print(count_letter_frequency(names))
+    sorted_names = sorted(names, key=lambda n: (-len(n), n))
 
-def count_letter_frequency(names: list[str]):
-    letter_freq = {}
-    for n in names:
-        for l in n:
-            capitalized_letter = l.capitalize()
-            item = letter_freq.setdefault(capitalized_letter, 0)
-            letter_freq.update({capitalized_letter: item + 1})
+    letter_frequency = calculate_letter_frequency(sorted_names)
+    sorted_letter_frequency = dict(sorted(letter_frequency.items(), key=lambda item: -item[1]))
 
-    return letter_freq
+    print(sorted_letter_frequency)
+
+def calculate_letter_frequency(names: list[str]) -> dict[str, int]:
+    letter_frequency = defaultdict(int)
+    for name in names:
+        for letter in name.upper():
+            letter_frequency[letter] += 1
+
+    return letter_frequency
 
 main()
