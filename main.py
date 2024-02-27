@@ -44,7 +44,7 @@ def calculate_letter_frequency(names: list[str]) -> dict[str, int]:
     return letter_frequency
 
 # 2. Calculates frequency of each letter in a list of names
-def calculate_letter_frequency(names: list[str]):
+def calculate_letter_frequency(names: list[str]) -> dict[str, int]:
     letters = [letter.upper() for name in names for letter in name]
     return Counter(letters)
 
