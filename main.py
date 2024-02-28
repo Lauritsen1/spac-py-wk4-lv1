@@ -1,9 +1,13 @@
 from collections import defaultdict, Counter
+import random
 from matplotlib import pyplot as plt
 from wordcloud import WordCloud
+from faker import Faker
+
+fake = Faker()
 
 def main():
-    names = ["Frank", "Alice", "Judy", "Bob", "Ivan", "Dave", "Heidi", "Charlie", "Eve", "Grace"]
+    names = generate_name_list(10, 2)
 
     # Sorts names by length (longest first), if same length, then alphabetically
     sorted_names = sorted(names, key=lambda n: (-len(n), n))
@@ -33,6 +37,18 @@ def main():
     # Show figure
     plt.tight_layout()
     plt.show()
+
+def generate_name_list(total_amount: int, duplicates: int) -> list[str]:
+    names = []
+
+    if duplicates < 0: # Returns list of unique names
+        names = [fake.unique.name() for _ in range(total_amount)]
+    elif duplicates > 0: # Returns list of names containing duplicates
+        names = [fake.name() for _ in range(total_amount - duplicates)]
+        names.extend(random.choices(names, k = duplicates))
+        random.shuffle(names)
+
+    return names
 
 # 1. Calculates frequency of each letter in a list of names
 def calculate_letter_frequency(names: list[str]) -> dict[str, int]:
