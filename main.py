@@ -7,14 +7,15 @@ from faker import Faker
 
 fake = Faker()
 
-
-
 def main():
     names = generate_name_list(10, 2)
-    sorted_names = sorted(names, key=lambda n: (-len(n), n))
+    unique_names = list(set(names))
+    sorted_unique_names = sorted(unique_names, key=lambda n: (-len(n), n))
 
-    letter_frequency = calculate_letter_frequency(sorted_names)
+    letter_frequency = calculate_letter_frequency(sorted_unique_names)
     sorted_letter_frequency = sorted(letter_frequency.items(), key=lambda item: -item[1])
+
+    print(letter_frequency)
 
     fig = plt.figure(figsize=(10, 8))
 
@@ -29,7 +30,6 @@ def main():
     x, y = zip(*sorted_letter_frequency)
 
     ax1.bar(x, y)
-    ax1.set_ylabel("Frequency")
     ax1.set_title("Frequency of each letter in list of names")
 
     wordCloud = WordCloud().generate_from_frequencies(letter_frequency)
@@ -41,14 +41,11 @@ def main():
     mean_len = mean(name_len)
     median_len = median(name_len)
 
-    ax3.bar(names, name_len)
-    ax3.axhline(mean_len, color="red", linestyle="--", label="Average")
-    ax3.axhline(median_len, color="blue", linestyle="--", label="Median")
+    ax3.barh(names, name_len)
+    ax3.axvline(mean_len, color="red", linestyle="--", label="Average")
+    ax3.axvline(median_len, color="blue", linestyle="--", label="Median")
     ax3.legend()
-    ax3.set_ylabel("Lenght")
     ax3.set_title("Lenght of names")
-
-    plt.xticks(rotation = 90)
   
     plt.show()
 
