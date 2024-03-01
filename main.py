@@ -12,9 +12,13 @@ def main():
     names = [fake.first_name() for _ in range(10)]
     unique_names = list(set(names))
     sorted_unique_names = sorted(unique_names, key=lambda n: (-len(n), n))
-
     letter_frequency = calculate_letter_frequency(sorted_unique_names)
-    sorted_letter_frequency = dict(sorted(letter_frequency.items(), key=lambda item: -item[1]))
+
+    # Print data to console
+    print(f"\033[92m 1. names:\033[0m {names}\n")
+    print(f"\033[93m 2. unique_names:\033[0m {unique_names}\n")
+    print(f"\033[94m 3. sorted_unique_names:\033[0m {sorted_unique_names}\n")
+    print(f"\033[95m 4. letter_frequency:\033[0m {letter_frequency}\n")
 
     # Figure/Plot layout and styling
     plt.style.use('bmh')
@@ -29,7 +33,7 @@ def main():
     ax3 = plt.subplot(gs[1])
 
     # Bar chart showing frequency of letters
-    letter, frequency = zip(*sorted_letter_frequency.items())
+    letter, frequency = zip(*letter_frequency.items())
     ax1.bar(letter, frequency)
 
     # Wordcloud showing letters with sizes depending on frequency
@@ -38,12 +42,12 @@ def main():
     ax2.axis("off")
 
     # Bar chart showing lenght of names and average length
-    name_len = list(map(lambda n: len(n), sorted_unique_names))
-    mean_len = mean(name_len)
-    median_len = median(name_len)
-    ax3.barh(names, name_len)
-    ax3.axvline(mean_len, color="red", linestyle="--", label="Average")
-    ax3.axvline(median_len, color="blue", linestyle="--", label="Median")
+    unique_name_lengths = list(map(lambda n: len(n), sorted_unique_names))
+    average_name_length = mean(unique_name_lengths)
+    median_name_length = median(unique_name_lengths)
+    ax3.barh(sorted_unique_names, unique_name_lengths)
+    ax3.axvline(average_name_length, color="red", linestyle="--", label="Average")
+    ax3.axvline(median_name_length, color="blue", linestyle="--", label="Median")
     ax3.legend()
 
     plt.show()
@@ -51,7 +55,7 @@ def main():
 # Maps unique letters to their frequencies
 def calculate_letter_frequency(names: list[str]) -> dict[str, int]:
     letters = [letter.upper() for name in names for letter in name]
-    return Counter(letters)
+    return dict(Counter(letters).most_common())
 
 if __name__ == "__main__":
     main()
