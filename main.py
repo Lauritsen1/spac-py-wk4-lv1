@@ -8,6 +8,7 @@ from faker import Faker
 def main():
     fake = Faker()
 
+    # Data
     names = [fake.first_name() for _ in range(10)]
     unique_names = list(set(names))
     sorted_unique_names = sorted(unique_names, key=lambda n: (-len(n), n))
@@ -15,6 +16,7 @@ def main():
     letter_frequency = calculate_letter_frequency(sorted_unique_names)
     sorted_letter_frequency = dict(sorted(letter_frequency.items(), key=lambda item: -item[1]))
 
+    # Figure/Plot layout and styling
     plt.style.use('bmh')
 
     fig = plt.figure(tight_layout=True, figsize=(8, 6))
@@ -46,6 +48,7 @@ def main():
 
     plt.show()
 
+# Maps unique letters to their frequencies
 def calculate_letter_frequency(names: list[str]) -> dict[str, int]:
     letters = [letter.upper() for name in names for letter in name]
     return Counter(letters)
